@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 using UnityEngine.UI;
 public class City
 {
-    trans
+
 }

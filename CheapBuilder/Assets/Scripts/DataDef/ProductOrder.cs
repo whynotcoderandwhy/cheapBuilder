@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ProductOrder 
 {
-    public float m_quanity;
+    public float m_quantity;
+    public bool m_quantityLocked = false;
     public Material m_material;
 }
