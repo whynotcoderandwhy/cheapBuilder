@@ -4,10 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Building
 {
-    public enum BuildingState
-    {
-
-    }
     /// <summary>
     /// probabblity of requiring a repair
     /// </summary>

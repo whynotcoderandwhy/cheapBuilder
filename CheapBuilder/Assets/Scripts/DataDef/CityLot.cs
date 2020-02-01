@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class CityLot
 {
-    protected Vector2 m_location;
-    protected Vector2 m_size;
+    protected Vector3 m_location;
+    protected Vector3 m_size;
     protected Building m_building; 
 }
 
