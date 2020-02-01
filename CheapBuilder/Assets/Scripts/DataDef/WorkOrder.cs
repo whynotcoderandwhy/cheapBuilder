@@ -31,7 +31,7 @@ public class WorkOrder
     /// <returns>true if split successfully, false if index didn't exist</returns>
     public bool SplitActualList(int actualMaterialIndex)
     {
-        if (m_actualMaterialList.ElementAt(actualMaterialIndex) == null)
+        if (m_actualMaterialList[actualMaterialIndex] == null)
             return false;
         ProductOrder np;
         if (m_actualMaterialList[actualMaterialIndex].SplitThisOrder(out np))
@@ -49,7 +49,7 @@ public class WorkOrder
     /// <param name="Lock">true if the quantity is to be locked</param>
     public void LockQuantity(int actualMaterialIndex, bool Lock = true)
     {
-        if (m_actualMaterialList.ElementAt(actualMaterialIndex) == null)
+        if (m_actualMaterialList[actualMaterialIndex] == null)
             return;
 
         m_actualMaterialList[actualMaterialIndex].m_quantityLocked = Lock;
@@ -62,7 +62,7 @@ public class WorkOrder
     /// <param name="newMaterialCount"></param>
     public void UpdateQuantity(int actualMaterialIndex, int newMaterialCount)
     {
-        if (m_actualMaterialList.ElementAt(actualMaterialIndex) == null)
+        if (m_actualMaterialList[actualMaterialIndex] == null)
             return;
         if (m_actualMaterialList[actualMaterialIndex].m_quantityLocked) //this should never be true, as hopefully people checked for it to be locked before trying to update
             return;
@@ -78,13 +78,13 @@ public class WorkOrder
     /// <returns></returns>
     protected bool AreTheseTheSameMaterial(int firstMaterialIndex, int secondMaterialIndex)
     {
-        if (m_actualMaterialList.ElementAt(firstMaterialIndex) == null || m_actualMaterialList.ElementAt(secondMaterialIndex) == null) //they need to exist
+        if (m_actualMaterialList[firstMaterialIndex] == null || m_actualMaterialList[secondMaterialIndex] == null) //they need to exist
             return false;
         //this checks if there are any values shared by both this material and the one above it
         Material.MaterialType comparison = m_actualMaterialList[firstMaterialIndex].m_material.MaterialFlags
                                          & m_actualMaterialList[secondMaterialIndex].m_material.MaterialFlags;
 
-        return ((comparison & Material.MaterialType.AllMaterials) == 0);
+        return ((comparison & Material.MaterialType.AllMaterials) != 0); //if the comparison got a match, and it's a material, it should be non-0
     }
 
     /// <summary>
@@ -94,6 +94,8 @@ public class WorkOrder
     /// <returns></returns>
     public bool RemoveActualMaterial(int actualMaterialIndex)
     {
+        if (actualMaterialIndex < 1)
+            return false;
         if (!AreTheseTheSameMaterial(actualMaterialIndex, actualMaterialIndex-1))
             return false; //if there are no materials shared, then this is the top of the list of the type of material, and we should not remove it
 
@@ -107,10 +109,16 @@ public class WorkOrder
 
     }
 
+    /// <summary>
+    /// pass in the original index of the one destroyed, it'll use that to get the one above it which is assumed to be the same material
+    /// If this is called without the destroyer, just add 1 to the index you wish to use the material of
+    /// </summary>
+    /// <param name="actualMaterialIndex"></param>
+    /// <param name="amountToRedistribute"></param>
     protected void Redistribute(int actualMaterialIndex, float amountToRedistribute)
     {
         //redist mats of same type 
-        List<int> indexesOfSameMats = null;
+        List<int> indexesOfSameMats = new List<int>();
         foreach (ProductOrder p in m_actualMaterialList)
         {
             if (AreTheseTheSameMaterial(actualMaterialIndex - 1, m_actualMaterialList.IndexOf(p))
