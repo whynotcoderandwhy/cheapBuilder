@@ -14,6 +14,70 @@ public class WorkOrder
     protected int m_dueDate;
     protected int m_startDate;
 
+    protected int m_numberOfWorkers;
+
+
+    public bool CreateInitialWorkOrderSpecs(Building building)
+    {
+
+        if (m_numberOfWorkers < 1)
+            return false;
+        if (m_desiredMaterialList != default)
+            return false;
+        if (m_actualMaterialList != default)
+            return false;
+
+        m_desiredMaterialList = new List<ProductOrder>();
+        m_actualMaterialList = new List<ProductOrder>();//these need to be initialized
+
+
+        m_building = building;
+        m_startDate = WorldState.Instance.Day;
+
+        float quantityofmaterials = 0;
+        float totalbuildingmaterialscost = 0;
+
+        //assuming both base value and integrity are values out of 100
+        //determine desired material list
+        //value changes quality of materials, integrity changes quantity
+        for (int i = 0;
+            i < Random.Range(
+                Mathf.Clamp(1 * Mathf.FloorToInt(building.Integrity / 20), 1, 5),
+                Mathf.Clamp(2 * Mathf.FloorToInt(building.Integrity / 20), 2, 10));
+            i++) //# of orders 
+        {
+            ProductOrder po = new ProductOrder();
+            po.m_quantity = Random.Range(1, 100) * (1 + building.Integrity / 100);
+            po.m_quantityLocked = false;
+            po.m_material = Material.GenerateRandomMaterial(building.Value);
+            quantityofmaterials += po.m_quantity;
+            totalbuildingmaterialscost += po.m_material.Cost;
+            m_desiredMaterialList.Add(po);
+        }
+
+
+        //determine manhours
+        m_manHours = quantityofmaterials /( (WorldState.Instance.DailyPersonalMaterialConsumption/24.0f) * m_numberOfWorkers);
+
+
+        //determine due date
+        m_dueDate = m_startDate+Mathf.CeilToInt(m_manHours / (m_numberOfWorkers*8.0f)); //start date plus 8 man hours/day per worker
+
+
+        //determine base cost
+        m_baseCost = (m_manHours * WorldState.Instance.WorkerWages) + totalbuildingmaterialscost;
+
+        return true;
+
+    }
+
+
+
+
+
+
+
+
     /// <summary>
     /// Lets the player predict impact aside from worker factor
     /// </summary>

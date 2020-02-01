@@ -6,6 +6,39 @@ using NUnit.Framework;
 public class WorkOrderTests : WorkOrder
 {
 
+    [Test]
+    public void initializationTest()
+    {
+        Building b = new Building();
+        b.Init(50, 50);
+
+        GameObject ws = GameObject.FindObjectOfType<WorldState>().gameObject;
+        Assert.That(ws!=default, "couldn't init world state");
+
+        Assert.That(!CreateInitialWorkOrderSpecs(b), string.Format("Somehow started without workers"));
+        m_numberOfWorkers = 2;
+        Assert.That(CreateInitialWorkOrderSpecs(b), string.Format("Failed to start after workers added"));
+
+        Assert.That(m_desiredMaterialList != default, string.Format("Desired Materials List {0}", m_desiredMaterialList.Count));
+        Assert.That(m_actualMaterialList != default, string.Format("Actual Materials List {0}", m_actualMaterialList.Count));
+        Assert.That(m_desiredMaterialList.Count != 0, string.Format("Desired Materials List Size {0}", m_desiredMaterialList.Count));
+
+        Assert.That(m_manHours != 0, string.Format("Manhours {0}", m_manHours));
+        Assert.That(m_dueDate >0, string.Format("Due Date {0}", m_dueDate));
+        Assert.That(m_baseCost >0, string.Format("Base Cost {0}", m_baseCost));
+
+    }
+
+
+
+
+
+
+
+
+
+
+
     protected void setupTestingOrder()
     {
 
