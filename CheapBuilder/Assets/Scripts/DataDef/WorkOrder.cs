@@ -33,11 +33,13 @@ public class WorkOrder
     {
         if (m_actualMaterialList.ElementAt(actualMaterialIndex) == null)
             return false;
-        ProductOrder newmatlist = m_actualMaterialList[actualMaterialIndex];
-        m_actualMaterialList[actualMaterialIndex].m_quantity = Mathf.Ceil(m_actualMaterialList[actualMaterialIndex].m_quantity / 2.0f);
-        newmatlist.m_quantity = Mathf.Floor(newmatlist.m_quantity / 2.0f);
-        m_actualMaterialList.Insert(actualMaterialIndex + 1, newmatlist);
-        return true;
+        ProductOrder np;
+        if (m_actualMaterialList[actualMaterialIndex].SplitThisOrder(out np))
+        {
+            m_actualMaterialList.Insert(actualMaterialIndex + 1, np);
+            return true;
+        }
+        return false;
     }
 
     /// <summary>
@@ -99,32 +101,40 @@ public class WorkOrder
         Material MatType = m_actualMaterialList[actualMaterialIndex].m_material;
         m_actualMaterialList.RemoveAt(actualMaterialIndex);
 
+        Redistribute(actualMaterialIndex, ReDist);
+
+        return true;
+
+    }
+
+    protected void Redistribute(int actualMaterialIndex, float amountToRedistribute)
+    {
         //redist mats of same type 
         List<int> indexesOfSameMats = null;
         foreach (ProductOrder p in m_actualMaterialList)
         {
-            if (AreTheseTheSameMaterial(actualMaterialIndex - 1, m_actualMaterialList.IndexOf(p)) 
+            if (AreTheseTheSameMaterial(actualMaterialIndex - 1, m_actualMaterialList.IndexOf(p))
                 && !m_actualMaterialList[m_actualMaterialList.IndexOf(p)].m_quantityLocked)
                 indexesOfSameMats.Add(m_actualMaterialList.IndexOf(p));
         }
         if (indexesOfSameMats.Count <= 1)
         {
             //this only happens if there is only the base left. force-load mats back to it, ignoring lock
-            m_actualMaterialList[actualMaterialIndex - 1].m_quantity += ReDist;
+            m_actualMaterialList[actualMaterialIndex - 1].m_quantity += amountToRedistribute;
         }
         else
         {
-            int sharedAmount = (int) ReDist / indexesOfSameMats.Count;
-            int leftovers = (int) ReDist % indexesOfSameMats.Count;
+            int sharedAmount = (int)amountToRedistribute / indexesOfSameMats.Count;
+            int leftovers = (int)amountToRedistribute % indexesOfSameMats.Count;
 
 
-            foreach(int sharedMat in indexesOfSameMats )
+            foreach (int sharedMat in indexesOfSameMats)
             {
-                m_actualMaterialList[sharedMat].m_quantity += sharedAmount + ((leftovers-- >= 0) ? 1: 0); 
+                m_actualMaterialList[sharedMat].m_quantity += sharedAmount + ((leftovers-- >= 0) ? 1 : 0);
             }
         }
-
-        return true;
-
     }
+
+
+
 }

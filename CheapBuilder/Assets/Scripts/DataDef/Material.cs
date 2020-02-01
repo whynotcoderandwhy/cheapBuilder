@@ -28,4 +28,7 @@ public class Material
     protected string m_name;
     protected float m_quality;
     protected float m_cost;
+
+
+    public void TestingInit(MaterialType m, string n, float q, float c) { m_type = m; m_name = n; m_quality = q; m_cost = c; }
 }
