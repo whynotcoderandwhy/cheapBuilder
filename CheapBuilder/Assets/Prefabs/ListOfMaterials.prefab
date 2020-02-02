@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1918394375047820233
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1918394375047819831}
+  - component: {fileID: 1918394375047820232}
+  m_Layer: 0
+  m_Name: ListOfMaterials
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1918394375047819831
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918394375047820233}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1918394375047820232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918394375047820233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edefd2534a11db941823301f6ebe3b97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_allMaterials:
+  - m_type: 257
+    m_name: Branded Structural
+    m_quality: 75
+    m_cost: 75
+  - m_type: 1025
+    m_name: Damaged Structural
+    m_quality: 25
+    m_cost: 25
+  - m_type: 513
+    m_name: NoBrand Structural
+    m_quality: 50
+    m_cost: 50
+  - m_type: 258
+    m_name: Branded Guilding
+    m_quality: 75
+    m_cost: 75
+  - m_type: 1026
+    m_name: Damaged Guilding
+    m_quality: 25
+    m_cost: 25
+  - m_type: 514
+    m_name: Nobrand Guilding
+    m_quality: 50
+    m_cost: 50
+  - m_type: 260
+    m_name: Branded Adhesive
+    m_quality: 75
+    m_cost: 75
+  - m_type: 1028
+    m_name: Damaged Adhesive
+    m_quality: 25
+    m_cost: 25
+  - m_type: 516
+    m_name: Nobrand Adhesive
+    m_quality: 50
+    m_cost: 50
+  - m_type: 264
+    m_name: Branded FalseFront
+    m_quality: 75
+    m_cost: 75
+  - m_type: 1032
+    m_name: Damaged FalseFront
+    m_quality: 25
+    m_cost: 25
+  - m_type: 520
+    m_name: NoBrand FalseFront
+    m_quality: 50
+    m_cost: 50
+  - m_type: 272
+    m_name: Branded Mechanical
+    m_quality: 75
+    m_cost: 75
+  - m_type: 1040
+    m_name: Damaged Mechanical
+    m_quality: 25
+    m_cost: 25
+  - m_type: 528
+    m_name: NoBrand Mechanical
+    m_quality: 50
+    m_cost: 50
+  - m_type: 288
+    m_name: Branded Insulation
+    m_quality: 75
+    m_cost: 75
+  - m_type: 1056
+    m_name: Damaged Insulation
+    m_quality: 25
+    m_cost: 25
+  - m_type: 544
+    m_name: NoBrand Insulation
+    m_quality: 50
+    m_cost: 50
