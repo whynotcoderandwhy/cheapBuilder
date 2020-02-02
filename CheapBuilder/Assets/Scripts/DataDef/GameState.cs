@@ -13,8 +13,9 @@ public class GameState
     public static List<ActiveJob> m_ActiveJobs;
     public static float CurrentCash;
     public static float WorkHoursPerDay;
+    public static float HourProductivity;
+    public static float ManHourSurchange = 0.001f;
+    public static float LogImpact = 4;
 
-
-    //0.5% cost of house per hour to pay workers?
 }
 

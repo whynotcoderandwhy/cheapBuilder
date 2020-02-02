@@ -9,6 +9,7 @@ public class WorkOrder
     protected Building m_building;
     protected List<ProductOrder> m_desiredMaterialList;
     protected List<ProductOrder> m_actualMaterialList;
+    protected List<ProductOrder> m_sortedbyCostMaterialList;
     protected float m_manHours;
     protected float m_spentManHours;
     protected int m_dueDate;
@@ -61,36 +62,32 @@ public class WorkOrder
                 Mathf.Clamp(2 * Mathf.FloorToInt(building.Integrity / 20), 2, 10));
             i++) //# of orders 
         {
-            ProductOrder po = new ProductOrder();
-            po.m_quantity = Random.Range(1, 100) * (1 + building.Integrity / 100);
-            po.m_quantityLocked = false;
-            po.m_material = Material.PickRandomMaterial(building.Value);
-            quantityofmaterials += po.m_quantity;
-            totalbuildingmaterialscost += po.m_material.Cost;
+            ProductOrder po = new ProductOrder(m_building);
+            quantityofmaterials += po.Quantity;
+            totalbuildingmaterialscost += po.Material.Cost * po.Quantity;
             m_desiredMaterialList.Add(po);
         }
 
 
         //determine manhours
-        m_manHours = 1;// quantityofmaterials /( (WorldState.Instance.DailyPersonalMaterialConsumption/24.0f) * m_numberOfWorkers);
+        m_manHours = Mathf.Ceil(quantityofmaterials / GameState.HourProductivity);
 
 
         //determine due date
-        m_dueDate = 1;// m_startDate+Mathf.CeilToInt(m_manHours / (m_numberOfWorkers*8.0f)); //start date plus 8 man hours/day per worker
+        m_dueDate = GameState.GameDay * (int) Random.Range(m_manHours / GameState.WorkHoursPerDay / Mathf.Log(GameState.LogImpact, m_building.Value), m_manHours / GameState.WorkHoursPerDay);// m_startDate+Mathf.CeilToInt(m_manHours / (m_numberOfWorkers*8.0f)); //start date plus 8 man hours/day per worker
 
 
         //determine base cost
-        m_baseCost = /*(m_manHours * WorldState.Instance.WorkerWages) + */totalbuildingmaterialscost;
+        m_baseCost =  (m_manHours * GameState.ManHourSurchange * m_building.Value) + totalbuildingmaterialscost;
+
+
+        m_sortedbyCostMaterialList = m_actualMaterialList.ToList();
+        m_sortedbyCostMaterialList.Sort((first, second) => { return first.Material.Cost.CompareTo(second.Material.Cost); });
+
+
 
         return true;
-
     }
-
-
-
-
-
-
 
 
     /// <summary>
@@ -131,7 +128,7 @@ public class WorkOrder
         if (m_actualMaterialList[actualMaterialIndex] == null)
             return;
 
-        m_actualMaterialList[actualMaterialIndex].m_quantityLocked = Lock;
+        m_actualMaterialList[actualMaterialIndex].SetLock(Lock);
     }
 
     /// <summary>
@@ -141,11 +138,13 @@ public class WorkOrder
     /// <param name="newMaterialCount"></param>
     public void UpdateQuantity(int actualMaterialIndex, int newMaterialCount)
     {
-        if (m_actualMaterialList[actualMaterialIndex] == null)
+        if (newMaterialCount < 1)
             return;
-        if (m_actualMaterialList[actualMaterialIndex].m_quantityLocked) //this should never be true, as hopefully people checked for it to be locked before trying to update
-            return;
-        m_actualMaterialList[actualMaterialIndex].m_quantity += newMaterialCount;
+
+        uint currentQuanity = m_actualMaterialList[actualMaterialIndex].Quantity;
+        m_actualMaterialList[actualMaterialIndex].UpdateQuanity((uint)newMaterialCount);
+
+        Redistribute(actualMaterialIndex, currentQuanity - newMaterialCount);
     }
 
     /// <summary>
@@ -159,11 +158,11 @@ public class WorkOrder
     {
         if (m_actualMaterialList[firstMaterialIndex] == null || m_actualMaterialList[secondMaterialIndex] == null) //they need to exist
             return false;
-        //this checks if there are any values shared by both this material and the one above it
-        Material.MaterialType comparison = m_actualMaterialList[firstMaterialIndex].m_material.MaterialFlags
-                                         & m_actualMaterialList[secondMaterialIndex].m_material.MaterialFlags;
+        //this checks if the second material is the same core material type as the first one
+        Material.MaterialType maskedValue = m_actualMaterialList[firstMaterialIndex].Material.MaterialFlags
+                                         & Material.MaterialType.AllMaterials;
 
-        return ((comparison & Material.MaterialType.AllMaterials) != 0); //if the comparison got a match, and it's a material, it should be non-0
+        return m_actualMaterialList[secondMaterialIndex].Material.MaterialFlags.HasFlag(maskedValue); 
     }
 
     /// <summary>
@@ -178,14 +177,12 @@ public class WorkOrder
         if (!AreTheseTheSameMaterial(actualMaterialIndex, actualMaterialIndex-1))
             return false; //if there are no materials shared, then this is the top of the list of the type of material, and we should not remove it
 
-        float ReDist = m_actualMaterialList[actualMaterialIndex].m_quantity;
-        Material MatType = m_actualMaterialList[actualMaterialIndex].m_material;
-        m_actualMaterialList.RemoveAt(actualMaterialIndex);
+        float ReDist = m_actualMaterialList[actualMaterialIndex].Quantity;
+        Material MatType = m_actualMaterialList[actualMaterialIndex].Material;
 
         Redistribute(actualMaterialIndex, ReDist);
-
+        m_actualMaterialList.RemoveAt(actualMaterialIndex);
         return true;
-
     }
 
     /// <summary>
@@ -198,28 +195,31 @@ public class WorkOrder
     {
         //redist mats of same type 
         List<int> indexesOfSameMats = new List<int>();
-        foreach (ProductOrder p in m_actualMaterialList)
+        int startingPoint = actualMaterialIndex;
+        while (AreTheseTheSameMaterial(--startingPoint, actualMaterialIndex))
         {
-            if (AreTheseTheSameMaterial(actualMaterialIndex - 1, m_actualMaterialList.IndexOf(p))
-                && !m_actualMaterialList[m_actualMaterialList.IndexOf(p)].m_quantityLocked)
-                indexesOfSameMats.Add(m_actualMaterialList.IndexOf(p));
+            if (!m_actualMaterialList[startingPoint].IsLocked)
+                indexesOfSameMats.Add(startingPoint);
         }
-        if (indexesOfSameMats.Count <= 1)
+        int endPoint = actualMaterialIndex;
+        while (AreTheseTheSameMaterial(++endPoint, actualMaterialIndex))
+        {
+            if (!m_actualMaterialList[endPoint].IsLocked)
+                indexesOfSameMats.Add(endPoint);
+        }
+        //if there are no unlocked values force it to the first one
+        if (indexesOfSameMats.Count == 0)
         {
             //this only happens if there is only the base left. force-load mats back to it, ignoring lock
-            m_actualMaterialList[actualMaterialIndex - 1].m_quantity += amountToRedistribute;
+            m_actualMaterialList[startingPoint + 1].UpdateQuanity(m_actualMaterialList[startingPoint + 1].Quantity + (uint)amountToRedistribute);
+            return;
         }
-        else
-        {
-            int sharedAmount = (int)amountToRedistribute / indexesOfSameMats.Count;
-            int leftovers = (int)amountToRedistribute % indexesOfSameMats.Count;
 
+        uint sharedAmount = (uint) (amountToRedistribute / indexesOfSameMats.Count);
+        uint leftovers = (uint) (amountToRedistribute % indexesOfSameMats.Count);
+        foreach (int sharedMat in indexesOfSameMats)
+            m_actualMaterialList[sharedMat].UpdateQuanity(m_actualMaterialList[sharedMat].Quantity + sharedAmount + (uint)((leftovers-- >= 0) ? 1 : 0));
 
-            foreach (int sharedMat in indexesOfSameMats)
-            {
-                m_actualMaterialList[sharedMat].m_quantity += sharedAmount + ((leftovers-- >= 0) ? 1 : 0);
-            }
-        }
     }
 
 

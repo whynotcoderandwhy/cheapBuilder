@@ -44,12 +44,7 @@ public class WorkOrderTests : WorkOrder
 
         m_actualMaterialList = new List<ProductOrder>();
 
-        ProductOrder p = new ProductOrder();
-        p.m_quantity = 5;
-        p.m_material = new Material();
-        Material.MaterialType mt = new Material.MaterialType();
-        mt = (Material.MaterialType.Adhesive | Material.MaterialType.Damaged);
-        p.m_material.TestingInit(mt, "1", 3, 100);
+        ProductOrder p = new ProductOrder(new Material(Material.MaterialType.Adhesive | Material.MaterialType.Damaged, "1", 3, 100),5);
         m_actualMaterialList.Add(p);
     }
 
@@ -58,10 +53,10 @@ public class WorkOrderTests : WorkOrder
     {
         setupTestingOrder();
 
-        Assert.That(m_actualMaterialList[0].m_quantity == 5, string.Format("Started with {0}", m_actualMaterialList[0].m_quantity));
+        Assert.That(m_actualMaterialList[0].Quantity == 5, string.Format("Started with {0}", m_actualMaterialList[0].Quantity));
         Assert.IsTrue(SplitActualList(0));
-        Assert.That(m_actualMaterialList[0].m_quantity == 3, string.Format("Should be 3, got {0}", m_actualMaterialList[0].m_quantity));
-        Assert.That(m_actualMaterialList[1].m_quantity == 2, string.Format("Should be 2, got {0}", m_actualMaterialList[1].m_quantity));
+        Assert.That(m_actualMaterialList[0].Quantity == 3, string.Format("Should be 3, got {0}", m_actualMaterialList[0].Quantity));
+        Assert.That(m_actualMaterialList[1].Quantity == 2, string.Format("Should be 2, got {0}", m_actualMaterialList[1].Quantity));
 
     }
 
@@ -70,9 +65,9 @@ public class WorkOrderTests : WorkOrder
     {
         setupTestingOrder();
         LockQuantity(0, true);
-        Assert.That(m_actualMaterialList[0].m_quantityLocked == true, string.Format("Should be true, got {0}", m_actualMaterialList[0].m_quantityLocked));
+        Assert.That(m_actualMaterialList[0].IsLocked == true, string.Format("Should be true, got {0}", m_actualMaterialList[0].IsLocked));
         LockQuantity(0, false);
-        Assert.That(m_actualMaterialList[0].m_quantityLocked == false, string.Format("Should be false, got {0}", m_actualMaterialList[0].m_quantityLocked));
+        Assert.That(m_actualMaterialList[0].IsLocked == false, string.Format("Should be false, got {0}", m_actualMaterialList[0].IsLocked));
     }
 
     [Test]
@@ -81,34 +76,30 @@ public class WorkOrderTests : WorkOrder
         setupTestingOrder();
         UpdateQuantity(0, 1332);
 
-        Assert.That(m_actualMaterialList[0].m_quantity == 1337, string.Format("Should be 1337, got {0}", m_actualMaterialList[0].m_quantity));
+        Assert.That(m_actualMaterialList[0].Quantity == 1337, string.Format("Should be 1337, got {0}", m_actualMaterialList[0].Quantity));
         UpdateQuantity(0, -1332);
 
-        Assert.That(m_actualMaterialList[0].m_quantity == 5, string.Format("Should be 5, got {0}", m_actualMaterialList[0].m_quantity));
+        Assert.That(m_actualMaterialList[0].Quantity == 5, string.Format("Should be 5, got {0}", m_actualMaterialList[0].Quantity));
     }
 
     [Test]
     public void SameMatTest()
     {
         setupTestingOrder();
-        ProductOrder p = new ProductOrder();
-        p.m_quantity = 50;
-        p.m_material = new Material();
-        Material.MaterialType mt = new Material.MaterialType();
-        mt = (Material.MaterialType.Mechanical | Material.MaterialType.Branded);
-        p.m_material.TestingInit(mt, "2", 5, 700);
+        Material.MaterialType mt = Material.MaterialType.Mechanical | Material.MaterialType.Branded;
+        ProductOrder p = new ProductOrder(new Material(mt, "2", 5, 700),50);
         m_actualMaterialList.Add(p);
 
 
 
 
-        Assert.That(m_actualMaterialList[0].m_material.MaterialFlags == (Material.MaterialType.Adhesive | Material.MaterialType.Damaged), string.Format("Should be true"));
-        Assert.That(m_actualMaterialList[1].m_material.MaterialFlags == mt, string.Format("Should be true"));
+        Assert.That(m_actualMaterialList[0].Material.MaterialFlags == (Material.MaterialType.Adhesive | Material.MaterialType.Damaged), string.Format("Should be true"));
+        Assert.That(m_actualMaterialList[1].Material.MaterialFlags == mt, string.Format("Should be true"));
 
         Assert.That(AreTheseTheSameMaterial(0, 1)==false, string.Format("Should be false"));
 
-        Assert.That(m_actualMaterialList[0].m_material.MaterialFlags == (Material.MaterialType.Adhesive | Material.MaterialType.Damaged), string.Format("Should be true"));
-        Assert.That(m_actualMaterialList[1].m_material.MaterialFlags == mt, string.Format("Should be true"));
+        Assert.That(m_actualMaterialList[0].Material.MaterialFlags == (Material.MaterialType.Adhesive | Material.MaterialType.Damaged), string.Format("Should be true"));
+        Assert.That(m_actualMaterialList[1].Material.MaterialFlags == mt, string.Format("Should be true"));
     }
 
     [Test]
@@ -126,7 +117,7 @@ public class WorkOrderTests : WorkOrder
     {
         setupTestingOrder();
         Redistribute(m_actualMaterialList.Count, 500); //using Count so that it'll distribute to the last item on list
-        Assert.That(m_actualMaterialList[m_actualMaterialList.Count-1].m_quantity == 505, "didn't properly distribute");
+        Assert.That(m_actualMaterialList[m_actualMaterialList.Count-1].Quantity == 505, "didn't properly distribute");
 
 
     }
