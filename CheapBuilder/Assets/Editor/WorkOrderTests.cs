@@ -118,8 +118,6 @@ public class WorkOrderTests : WorkOrder
         setupTestingOrder();
         Redistribute(m_actualMaterialList.Count, 500); //using Count so that it'll distribute to the last item on list
         Assert.That(m_actualMaterialList[m_actualMaterialList.Count-1].Quantity == 505, "didn't properly distribute");
-
-
     }
 
 
