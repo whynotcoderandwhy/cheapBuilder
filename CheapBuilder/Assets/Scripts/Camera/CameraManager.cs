@@ -76,10 +76,10 @@ public class CameraManager : MonoBehaviour, ISerializationCallbackReceiver
 
     public void Update()
     {
-        float xValue = Input.GetAxis("Horizontal");
-        float yValue = Input.GetAxis("Vertical");
-
-        currentBehavoir.ResolveInput(xValue, yValue, xValue, yValue);
+        float xValue = -Input.GetAxis("Mouse X");
+        float yValue = -Input.GetAxis("Mouse Y");
+        float zValue = Input.GetAxis("Mouse ScrollWheel") * -100;
+        currentBehavoir.ResolveInput(xValue, yValue, zValue, zValue);
 
     }
 

@@ -11,7 +11,8 @@ public class AbzuCameraBehaviour : CameraBehavoir
     {
         //apply input values to orbit points
         m_cameraPoint.Increment(orbitX, orbitY);
-        m_lookAtPoint.Increment(lookatX, lookatY);
+        m_cameraPoint.ZoomIncrement(lookatX);
+        m_lookAtPoint.Increment(orbitX, orbitX);
 
         //base.ResolveInput(orbitX, orbitY, lookatX, lookatY);
 
