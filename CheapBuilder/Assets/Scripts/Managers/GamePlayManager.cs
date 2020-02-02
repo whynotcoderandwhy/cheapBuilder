@@ -5,6 +5,15 @@ using System.Linq;
 
 public class GamePlayManager
 {
+
+    public void GenerateStarterRepairs()
+    {
+        while(GameState.AvailibleJobs.Count < GameState.RepairInit)
+        {
+            GenerateRepairs();
+        }
+    }
+
     protected WorkerManager m_workerManager = new WorkerManager();
 
     public void IncrementDay()

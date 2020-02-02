@@ -11,10 +11,10 @@ public class GameState
     public static int CompletetionTolerance;
     public static float CompetenceRatio;
     public static float LuckModifier;
-    public static List<ActiveJob> ActiveJobs;
+    public static List<ActiveJob> ActiveJobs = new List<ActiveJob>();
     public static City m_city;
-    public static List<WorkOrder> AvailibleJobs;
-    public static List<Building> Cityscape;
+    public static List<WorkOrder> AvailibleJobs = new List<WorkOrder>();
+    public static List<Building> Cityscape = new List<Building>();
     public static float CurrentCash = 15000;
     public static float WorkHoursPerDay  = 8;
     public static float HourProductivity = 3;
@@ -22,6 +22,7 @@ public class GameState
     public static float LogImpact = 4;
     public static float AdvancePercentage = 0.2f;
     public static float MaxFailure = 2;
-    public static float RepairThreshold = 3;
+    public static float RepairThreshold = 0.3f;
+    public static float RepairInit = 5;
 }
 
