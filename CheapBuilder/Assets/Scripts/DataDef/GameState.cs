@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 using System.Threading.Tasks;
 
 public class GameState
@@ -11,6 +12,7 @@ public class GameState
     public static float CompetenceRatio;
     public static float LuckModifier;
     public static List<ActiveJob> ActiveJobs;
+    public static City m_city;
     public static List<WorkOrder> AvailibleJobs;
     public static List<Building> Cityscape;
     public static float CurrentCash = 15000;
