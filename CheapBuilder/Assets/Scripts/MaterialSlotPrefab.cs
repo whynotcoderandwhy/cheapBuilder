@@ -37,14 +37,28 @@ public class MaterialSlotPrefab : MonoBehaviour
         return true;
     }
 
-    public void UpdateSurrentSlot()
+    public void UpdateCurrentSlot()
     {
         //m_dropdown.value;
         m_dropdown.RefreshShownValue();
         m_dropdown.Select();
-        m_CostField.text = (/*m_productOrder.Quantity**/m_materials[m_dropdown.value].Cost).ToString();
+        m_CostField.text = (m_productOrder.Quantity*m_materials[m_dropdown.value].Cost).ToString();
         m_QualityField.text = m_materials[m_dropdown.value].Quality.ToString();
-        //m_QuantityField.text = m_productOrder.Quantity.ToString();
+        m_QuantityField.text = m_productOrder.Quantity.ToString();
+    }
+
+    public bool Init(ProductOrder po)
+    {
+        if (po == default)
+            return false;
+
+        Material.MaterialType type = po.Material.MaterialFlags;
+        ListOfAllMaterials list = GameObject.FindObjectOfType<ListOfAllMaterials>();
+        if (list == default)
+            return false;
+        List<Material> materialsOfType = list.GetAllMaterialsOfFlag(type);
+        m_productOrder = po;
+        return CreateOptions(materialsOfType);
     }
 
     // Start is called before the first frame update
@@ -55,6 +69,6 @@ public class MaterialSlotPrefab : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        UpdateCurrentSlot();//until I ensure the event works 
     }
 }

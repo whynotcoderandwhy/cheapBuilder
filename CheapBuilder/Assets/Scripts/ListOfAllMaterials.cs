@@ -12,11 +12,23 @@ public class ListOfAllMaterials : MonoBehaviour
 
     public Material GetMaterialOfFlag(Material.MaterialType mattype)
     {
-        foreach(Material m in m_allMaterials)
+        foreach (Material m in m_allMaterials)
         {
             if (m.MaterialFlags == mattype)
                 return m;
         }
         return null;
+    }
+    public List<Material> GetAllMaterialsOfFlag(Material.MaterialType mattype)
+    {
+        List<Material> listmats = new List<Material>();
+        foreach (Material m in m_allMaterials)
+        {
+            if (m.MaterialFlags == mattype)
+                listmats.Add(m);
+        }
+        if(listmats.Count==0)
+            return null;
+        return listmats;
     }
 }

@@ -17,9 +17,9 @@ public class ClipboardListManager : MonoBehaviour
 
 
 
-    protected bool AddItemToList(GameObject item)
+    protected bool AddItemToList(ProductOrder po)
     {
-        GameObject g = Instantiate(item) as GameObject;
+        GameObject g = Instantiate(m_dropdownItemPrefab) as GameObject;
         if (g == default)
         {
             return false;
@@ -38,17 +38,8 @@ public class ClipboardListManager : MonoBehaviour
 
             m_dropdownListGroups[m_currentWorkOrderViewed].Add(g);
 
-            MaterialSlotPrefab prefabsetting= g.GetComponent<MaterialSlotPrefab>();
-            /***********************PLACEHOLDER***********************/
-            Material l = Material.PickRandomMaterial(50);
-            Material m = Material.PickRandomMaterial(50);
-            Material n = Material.PickRandomMaterial(50);
-            List<Material> lmn = new List<Material>();
-            lmn.Add(l);
-            lmn.Add(m);
-            lmn.Add(n);
-            prefabsetting.CreateOptions(lmn);
-            /***********************PLACEHOLDER***********************/
+            MaterialSlotPrefab prefabsetting = g.GetComponent<MaterialSlotPrefab>();
+            prefabsetting.Init(po);
 
             return true;
         }
@@ -64,10 +55,5 @@ public class ClipboardListManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.P))
-        {
-
-            AddItemToList(m_dropdownItemPrefab);
-        }
     }
 }
