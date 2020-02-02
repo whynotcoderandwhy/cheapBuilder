@@ -25,7 +25,7 @@ public class ProductOrder
         this.m_quantity = (uint) Mathf.Ceil(this.m_quantity / 2.0f);
         return true;
     }
-    protected ProductOrder() { }
+    protected ProductOrder() {  }
 
     public bool UpdateQuanity(uint newQuanity, bool force = false)
     {
@@ -52,5 +52,14 @@ public class ProductOrder
         m_material = Material.PickRandomMaterial(sourceBuilding.Value);
     }
 
+
+    public bool AddToClipboard()
+    {
+        ClipboardListManager clippy = GameObject.FindObjectOfType<ClipboardListManager>();
+        if (clippy == default)
+            return false;
+        
+        return clippy.AddItemToList(this);
+    }
 
 }

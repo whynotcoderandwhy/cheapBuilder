@@ -45,6 +45,7 @@ public class WorkOrderTests : WorkOrder
         m_actualMaterialList = new List<ProductOrder>();
 
         ProductOrder p = new ProductOrder(new Material(Material.MaterialType.Adhesive | Material.MaterialType.Damaged, "1", 3, 100),5);
+        p.AddToClipboard();
         m_actualMaterialList.Add(p);
     }
 
@@ -88,6 +89,7 @@ public class WorkOrderTests : WorkOrder
         setupTestingOrder();
         Material.MaterialType mt = Material.MaterialType.Mechanical | Material.MaterialType.Branded;
         ProductOrder p = new ProductOrder(new Material(mt, "2", 5, 700),50);
+        p.AddToClipboard();
         m_actualMaterialList.Add(p);
 
 

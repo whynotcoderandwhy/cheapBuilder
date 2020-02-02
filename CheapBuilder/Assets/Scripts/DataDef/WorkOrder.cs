@@ -124,6 +124,7 @@ public class WorkOrder
             quantityofmaterials += po.Quantity;
             totalbuildingmaterialscost += po.Material.Cost * po.Quantity;
             m_desiredMaterialList.Add(po);
+            po.AddToClipboard();
         }
 
 
@@ -172,6 +173,7 @@ public class WorkOrder
         if (m_actualMaterialList[actualMaterialIndex].SplitThisOrder(out np))
         {
             m_actualMaterialList.Insert(actualMaterialIndex + 1, np);
+            np.AddToClipboard();
             return true;
         }
         return false;
