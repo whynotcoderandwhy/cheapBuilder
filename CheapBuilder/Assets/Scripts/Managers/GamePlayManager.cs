@@ -17,6 +17,14 @@ public class GamePlayManager
         ResolveExpiredJobs();
     }
 
+    protected void generateRepairs()
+    {
+        float repairDensity = (GameState.ActiveJobs.Count + GameState.AvailibleJobs.Count) / GameState.Cityscape.Count;
+        if (Random.Range(0, 1-repairDensity)> )
+         
+    }
+
+
     public void ResolveExpiredJobs()
     {
         for(int i = GameState.ActiveJobs.Count -1; i >= 0; i--)
