@@ -5925,7 +5925,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 557709566}
   m_HandleRect: {fileID: 557709564}
   m_Direction: 3
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -6072,6 +6072,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1225384203}
   m_CullTransparentMesh: 0
+--- !u!1 &1228911633
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1228911634}
+  - component: {fileID: 1228911635}
+  m_Layer: 0
+  m_Name: FollowedPlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1228911634
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228911633}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.0435954, y: 4.272602, z: 1.146347}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1228911635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228911633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ee926ae28ecb6c47beca7f75802bbfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forwards: 119
+  backwards: 115
+  left: 97
+  right: 100
+  up: 113
+  down: 101
 --- !u!1 &1244312486
 GameObject:
   m_ObjectHideFlags: 0
@@ -7490,6 +7539,7 @@ GameObject:
   - component: {fileID: 1483622769}
   - component: {fileID: 1483622768}
   - component: {fileID: 1483622767}
+  - component: {fileID: 1483622770}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -7562,6 +7612,55 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1483622770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1483622766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb9437e7ddecb304ab5776f3b3c2f62f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FollowObject: {fileID: 1228911633}
+  CameraObject: {fileID: 1483622766}
+  _currentState: 0
+  currentBehavoir:
+    m_lookAtPoint:
+      m_yawRotationAroundPivit: 0
+      m_pitchRotationAroundPivit: -90
+      m_distanceFromPivot: 10
+      m_maxPitch: 180
+      m_minPitch: -180
+      m_maxYaw: 180
+      m_minYaw: -180
+    m_cameraPoint:
+      m_yawRotationAroundPivit: 0
+      m_pitchRotationAroundPivit: 110
+      m_distanceFromPivot: 10
+      m_maxPitch: 180
+      m_minPitch: -180
+      m_maxYaw: 360
+      m_minYaw: -360
+  m_abzu:
+    m_lookAtPoint:
+      m_yawRotationAroundPivit: 0
+      m_pitchRotationAroundPivit: -90
+      m_distanceFromPivot: 10
+      m_maxPitch: 180
+      m_minPitch: -180
+      m_maxYaw: 180
+      m_minYaw: -180
+    m_cameraPoint:
+      m_yawRotationAroundPivit: 0
+      m_pitchRotationAroundPivit: 110
+      m_distanceFromPivot: 10
+      m_maxPitch: 180
+      m_minPitch: -180
+      m_maxYaw: 360
+      m_minYaw: -360
 --- !u!1 &1513059351
 GameObject:
   m_ObjectHideFlags: 0
@@ -9077,7 +9176,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 432727657}
   m_HandleRect: {fileID: 432727656}
   m_Direction: 3
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
