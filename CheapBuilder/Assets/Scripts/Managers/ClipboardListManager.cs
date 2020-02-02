@@ -17,7 +17,7 @@ public class ClipboardListManager : MonoBehaviour
 
 
 
-    protected bool AddItemToList(ProductOrder po)
+    public bool AddItemToList(ProductOrder po)
     {
         GameObject g = Instantiate(m_dropdownItemPrefab) as GameObject;
         if (g == default)

@@ -49,7 +49,7 @@ public class Material
         Material m = new Material();
         MaterialType mtype = new MaterialType();
 
-        float ChanceForLowQualityMats = Random.value* value; //random value has a chance to be 0. Better to have low housing getting high mats than high housing getting low mats
+        float ChanceForLowQualityMats = Random.value * value; //random value has a chance to be 0. Better to have low housing getting high mats than high housing getting low mats
 
         if (ChanceForLowQualityMats > 75)
             mtype = mtype | MaterialType.Damaged;
@@ -57,8 +57,10 @@ public class Material
             mtype = mtype | MaterialType.NoBrand;
         else
             mtype = mtype | MaterialType.Branded;
+    
 
-        mtype |= (MaterialType)System.Math.Pow(2, Random.Range(0, Mathf.Log(2, (float)MaterialType.AllMaterials + 1))) ; 
+
+        mtype |= (MaterialType)System.Math.Pow(2, Random.Range(0, /*Mathf.Log(2, (float)MaterialType.AllMaterials + 1))*/5) ); 
 
         ListOfAllMaterials list = GameObject.FindObjectOfType<ListOfAllMaterials>();
         if (list == default)
