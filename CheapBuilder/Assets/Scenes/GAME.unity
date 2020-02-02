@@ -11667,6 +11667,30 @@ Transform:
   m_Father: {fileID: 198416205}
   m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1945553891 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1918394375047820233, guid: 9fa41dbedeb65a346aa604d20e07013b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1918394375894694711}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1945553894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945553891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad88a5a02714bbb4aae9dd6ef3a202bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_allHousePrefabs:
+  - {fileID: 4982938078854298568, guid: 1331a36548b0c2a4f92a5fb76d70eec9, type: 3}
+  - {fileID: 8773839086826118696, guid: 78591092b247770469c9f6dada707a4a, type: 3}
+  - {fileID: 4909643581352334177, guid: 5df94dcac3d7ebc4f83250d69a11c3e3, type: 3}
+  - {fileID: 3172568388543408799, guid: d1701afd751287d4b93c9000373d6945, type: 3}
+  m_cityPoints: []
 --- !u!1 &1955421799
 GameObject:
   m_ObjectHideFlags: 0
@@ -12885,7 +12909,7 @@ PrefabInstance:
     - target: {fileID: 1918394375047820233, guid: 9fa41dbedeb65a346aa604d20e07013b,
         type: 3}
       propertyPath: m_Name
-      value: ListOfMaterials
+      value: OVERSEERSUPREME
       objectReference: {fileID: 0}
     - target: {fileID: 1918394375047819831, guid: 9fa41dbedeb65a346aa604d20e07013b,
         type: 3}
