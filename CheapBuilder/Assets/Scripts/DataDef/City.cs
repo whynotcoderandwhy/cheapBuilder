@@ -48,6 +48,7 @@ public class City : MonoBehaviour
             Building b = new Building();
             b.Init(UnityEngine.Random.Range(0, 100), UnityEngine.Random.Range(0, 100)); //building values
             CityLot cl = new CityLot(b, hp.transform.position, Vector3.one);
+            GameState.Cityscape.Add(b);
             m_lots.Add(cl);
         }
     }
@@ -59,6 +60,8 @@ public class City : MonoBehaviour
         GameState.m_city = this;
         m_lots = new List<CityLot>();
         CitySetup();
+
+        GamePlayManager.GenerateStarterRepairs();
     }
 
     // Update is called once per frame

@@ -6,7 +6,7 @@ using System.Linq;
 public class GamePlayManager
 {
 
-    public void GenerateStarterRepairs()
+    public static void GenerateStarterRepairs()
     {
         while(GameState.AvailibleJobs.Count < GameState.RepairInit)
         {
@@ -27,7 +27,7 @@ public class GamePlayManager
         GenerateRepairs();
     }
 
-    protected void GenerateRepairs()
+    public static void GenerateRepairs()
     {
         float repairDensity = (GameState.ActiveJobs.Count + GameState.AvailibleJobs.Count) / GameState.Cityscape.Count;
         if (Random.Range(0, 1 - repairDensity) < GameState.RepairThreshold)
