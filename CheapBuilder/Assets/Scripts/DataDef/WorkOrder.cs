@@ -26,7 +26,12 @@ public class WorkOrder
     {
         m_sortedbyCostMaterialList = default;
         if (++m_failureCount > GameState.MaxFailure)
+        {
+            m_building.SetHasWorkOrder(false);
             return false;
+        }
+
+        m_dueDate += Random.Range(1, 7);
         return true;
     }
 
@@ -131,11 +136,13 @@ public class WorkOrder
 
 
         //determine due date
-        m_dueDate = GameState.GameDay * (int) Random.Range(m_manHours / GameState.WorkHoursPerDay / Mathf.Log(GameState.LogImpact, m_building.Value), m_manHours / GameState.WorkHoursPerDay);// m_startDate+Mathf.CeilToInt(m_manHours / (m_numberOfWorkers*8.0f)); //start date plus 8 man hours/day per worker
+        m_dueDate = GameState.GameDay + (int) System.Math.Min(1, Random.Range(m_manHours / GameState.WorkHoursPerDay / Mathf.Log(GameState.LogImpact, m_building.Value), m_manHours / GameState.WorkHoursPerDay)) ;// m_startDate+Mathf.CeilToInt(m_manHours / (m_numberOfWorkers*8.0f)); //start date plus 8 man hours/day per worker
 
 
         //determine base cost
         m_baseCost =  (m_manHours * GameState.ManHourSurchange * m_building.Value) + totalbuildingmaterialscost;
+
+        building.SetHasWorkOrder(true);
 
         return AddClipboardHeader();
     }
@@ -206,13 +213,10 @@ public class WorkOrder
     /// <param name="newMaterialCount"></param>
     public void UpdateQuantity(int actualMaterialIndex, int newMaterialCount)
     {
-        if (newMaterialCount < 1)
-            return;
-
         uint currentQuanity = m_actualMaterialList[actualMaterialIndex].Quantity;
-        m_actualMaterialList[actualMaterialIndex].UpdateQuanity((uint)newMaterialCount);
+        m_actualMaterialList[actualMaterialIndex].UpdateQuanity((uint)( newMaterialCount + currentQuanity) );
 
-        Redistribute(actualMaterialIndex, currentQuanity - newMaterialCount);
+        Redistribute(actualMaterialIndex, -newMaterialCount);
     }
 
     /// <summary>
@@ -224,6 +228,8 @@ public class WorkOrder
     /// <returns></returns>
     protected bool AreTheseTheSameMaterial(int firstMaterialIndex, int secondMaterialIndex)
     {
+        if ((firstMaterialIndex < 0) || (secondMaterialIndex < 0) || (firstMaterialIndex >= m_actualMaterialList.Count) || (secondMaterialIndex >= m_actualMaterialList.Count))
+            return false;
         if (m_actualMaterialList[firstMaterialIndex] == null || m_actualMaterialList[secondMaterialIndex] == null) //they need to exist
             return false;
         //this checks if the second material is the same core material type as the first one
