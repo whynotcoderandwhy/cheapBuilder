@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 
 
 [System.Serializable]
@@ -36,7 +35,11 @@ public class City : MonoBehaviour
             int h = UnityEngine.Random.Range(0, num - 1);
             GameObject hp = Instantiate(m_allHousePrefabs[h]) as GameObject;
             hp.transform.position = pt.transform.position;
-            
+
+            Building b = new Building();
+            b.Init(UnityEngine.Random.Range(0, 100), UnityEngine.Random.Range(0, 100)); //building values
+            CityLot cl = new CityLot(b, hp.transform.position, Vector3.one);
+            m_lots.Add(cl);
         }
     }
 
@@ -45,6 +48,7 @@ public class City : MonoBehaviour
     void Start()
     {
         GameState.m_city = this;
+        m_lots = new List<CityLot>();
         CitySetup();
     }
 
