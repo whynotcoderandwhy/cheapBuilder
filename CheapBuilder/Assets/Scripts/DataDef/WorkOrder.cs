@@ -47,7 +47,7 @@ public class WorkOrder
 
 
         m_building = building;
-        m_startDate = WorldState.Instance.Day;
+        //m_startDate = WorldState.Instance.Day;
 
         float quantityofmaterials = 0;
         float totalbuildingmaterialscost = 0;
@@ -72,15 +72,15 @@ public class WorkOrder
 
 
         //determine manhours
-        m_manHours = quantityofmaterials /( (WorldState.Instance.DailyPersonalMaterialConsumption/24.0f) * m_numberOfWorkers);
+        m_manHours = 0;// quantityofmaterials /( (WorldState.Instance.DailyPersonalMaterialConsumption/24.0f) * m_numberOfWorkers);
 
 
         //determine due date
-        m_dueDate = m_startDate+Mathf.CeilToInt(m_manHours / (m_numberOfWorkers*8.0f)); //start date plus 8 man hours/day per worker
+        m_dueDate = 0;// m_startDate+Mathf.CeilToInt(m_manHours / (m_numberOfWorkers*8.0f)); //start date plus 8 man hours/day per worker
 
 
         //determine base cost
-        m_baseCost = (m_manHours * WorldState.Instance.WorkerWages) + totalbuildingmaterialscost;
+        m_baseCost = /*(m_manHours * WorldState.Instance.WorkerWages) + */totalbuildingmaterialscost;
 
         return true;
 

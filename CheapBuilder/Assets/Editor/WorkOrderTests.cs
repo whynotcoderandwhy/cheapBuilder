@@ -12,8 +12,8 @@ public class WorkOrderTests : WorkOrder
         Building b = new Building();
         b.Init(50, 50);
 
-        GameObject ws = GameObject.FindObjectOfType<WorldState>().gameObject;
-        Assert.That(ws!=default, "couldn't init world state");
+        //GameObject ws = GameObject.FindObjectOfType<WorldState>().gameObject;
+        //Assert.That(ws!=default, "couldn't init world state");
 
         Assert.That(!CreateInitialWorkOrderSpecs(b), string.Format("Somehow started without workers"));
         m_numberOfWorkers = 2;
