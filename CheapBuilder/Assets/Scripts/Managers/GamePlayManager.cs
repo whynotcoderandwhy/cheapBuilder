@@ -12,7 +12,8 @@ public class GamePlayManager
         GameState.GameDay++;
         GameState.CurrentCash -= m_workerManager.PayWorkers();
         GameState.CurrentCash -= GameState.ActiveJobs.Select(
-            ActiveJob => ActiveJob.ResolveDayAndCalculateCost()).Sum();
+            ActiveJob => ActiveJob.ResolveDayAndCalculateCost()
+            ).Sum();
         ResolveExpiredJobs();
     }
 
@@ -23,12 +24,13 @@ public class GamePlayManager
             if (!GameState.ActiveJobs[i].WorkComplete)
                 continue;
             ActiveJob jobCleanup = GameState.ActiveJobs[i];
-            GameState.ActiveJobs.RemoveAt(i);
+
 
             if (jobCleanup.WorkFailed)
             {
                 //TODO: do more than just this
-                jobCleanup.ResetProgress();
+                if (jobCleanup.ResetProgress())
+                    GameState.ActiveJobs.RemoveAt(i);
                 continue;
             }
             GameState.CurrentCash += (1 - GameState.AdvancePercentage) * jobCleanup.JobWorth;

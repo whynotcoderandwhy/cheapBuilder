@@ -11,9 +11,10 @@ public class GameState
     public static float CompetenceRatio;
     public static float LuckModifier;
     public static List<ActiveJob> ActiveJobs;
-    public static float CurrentCash;
-    public static float WorkHoursPerDay;
-    public static float HourProductivity;
+    public static List<WorkOrder> AvailibleJobs; 
+    public static float CurrentCash = 15000;
+    public static float WorkHoursPerDay  = 8;
+    public static float HourProductivity = 3;
     public static float ManHourSurchange = 0.001f;
     public static float LogImpact = 4;
     public static float AdvancePercentage = 0.2f;

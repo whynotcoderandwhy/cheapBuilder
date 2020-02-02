@@ -48,7 +48,7 @@ public class ProductOrder
     }
     public ProductOrder(Building sourceBuilding)
     {
-        m_quantity = (uint) Random.Range(1, Mathf.Log(GameState.LogImpact, sourceBuilding.Value));
+        m_quantity = (uint) Random.Range(1, System.Math.Max(Mathf.Log(GameState.LogImpact, sourceBuilding.Value),1));
         m_material = Material.PickRandomMaterial(sourceBuilding.Value);
     }
 
