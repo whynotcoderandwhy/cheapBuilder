@@ -44,62 +44,54 @@ public class Material
     public void TestingInit(MaterialType m, string n, float q, float c) { m_type = m; m_name = n; m_quality = q; m_cost = c; }
 
 
-    public static Material GenerateRandomMaterial(float value)
+    public static Material PickRandomMaterial(float value)
     {
         Material m = new Material();
-        m.m_type = new MaterialType();
-        m.m_name = "";
+        MaterialType mtype = new MaterialType();
 
         float ChanceForLowQualityMats = Random.value* value; //random value has a chance to be 0. Better to have low housing getting high mats than high housing getting low mats
 
         if (ChanceForLowQualityMats > 75)
         {
-            m.m_type = m.m_type | MaterialType.Damaged;
-            m.m_name += "Damaged ";
+            mtype = mtype | MaterialType.Damaged;
         }
         else if (ChanceForLowQualityMats > 25 && ChanceForLowQualityMats < 75)
         {
-            m.m_type = m.m_type | MaterialType.NoBrand;
-            m.m_name += "Standard ";
+            mtype = mtype | MaterialType.NoBrand;
         }
         else
         {
-            m.m_type = m.m_type | MaterialType.Branded;
-            m.m_name += "Branded ";
+            mtype = mtype | MaterialType.Branded;
         }
-        m.m_quality = (100 - ChanceForLowQualityMats);
-        m.m_cost = m.m_quality * (1 + value / 100.0f);
 
         switch (Random.Range(0, 5))
         {
             case 0:
-                m.m_type = m.m_type | MaterialType.Structural;
-                m.m_name += "Structural";
+                mtype = mtype | MaterialType.Structural;
                 break;
             case 1:
-                m.m_type = m.m_type | MaterialType.Guilding;
-                m.m_name += "Guilding";
+                mtype = mtype | MaterialType.Guilding;
                 break;
             case 2:
-                m.m_type = m.m_type | MaterialType.Adhesive;
-                m.m_name += "Adhesive";
+                mtype = mtype | MaterialType.Adhesive;
                 break;
             case 3:
-                m.m_type = m.m_type | MaterialType.FalseFront;
-                m.m_name += "FalseFront";
+                mtype = mtype | MaterialType.FalseFront;
                 break;
             case 4:
-                m.m_type = m.m_type | MaterialType.Mechanical;
-                m.m_name += "Mechanical";
+                mtype = mtype | MaterialType.Mechanical;
                 break;
             case 5:
-                m.m_type = m.m_type | MaterialType.Insulation;
-                m.m_name += "Insulation";
+                mtype = mtype | MaterialType.Insulation;
                 break;
         }
 
+        ListOfAllMaterials list = GameObject.FindObjectOfType<ListOfAllMaterials>();
+        if (list == default)
+            return null;
 
+        
 
-        return m;
+        return list.GetMaterialOfFlag(mtype);
     }
 }
