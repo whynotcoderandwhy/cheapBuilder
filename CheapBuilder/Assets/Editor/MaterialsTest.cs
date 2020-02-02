@@ -6,7 +6,7 @@ using NUnit.Framework;
 public class MaterialsTest : Material
 {
 
-    [Test]
+   /* [Test]
     public void GeneratorTest()
     {
         Material m = GenerateRandomMaterial(50);
@@ -14,7 +14,7 @@ public class MaterialsTest : Material
         Assert.That(m.Name != null, string.Format("Name {0}", m.Name));
         Assert.That(m.Quality != 0, string.Format("Quality {0}", m.Quality));
         Assert.That((m.MaterialFlags | MaterialType.AllMaterials) != 0, string.Format("MaterialFlags {0}", m.MaterialFlags));
-    }
+    }*/
 
 
 

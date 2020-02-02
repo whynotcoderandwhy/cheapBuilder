@@ -64,7 +64,7 @@ public class WorkOrder
             ProductOrder po = new ProductOrder();
             po.m_quantity = Random.Range(1, 100) * (1 + building.Integrity / 100);
             po.m_quantityLocked = false;
-            po.m_material = Material.GenerateRandomMaterial(building.Value);
+            po.m_material = Material.PickRandomMaterial(building.Value);
             quantityofmaterials += po.m_quantity;
             totalbuildingmaterialscost += po.m_material.Cost;
             m_desiredMaterialList.Add(po);
@@ -72,11 +72,11 @@ public class WorkOrder
 
 
         //determine manhours
-        m_manHours = 0;// quantityofmaterials /( (WorldState.Instance.DailyPersonalMaterialConsumption/24.0f) * m_numberOfWorkers);
+        m_manHours = 1;// quantityofmaterials /( (WorldState.Instance.DailyPersonalMaterialConsumption/24.0f) * m_numberOfWorkers);
 
 
         //determine due date
-        m_dueDate = 0;// m_startDate+Mathf.CeilToInt(m_manHours / (m_numberOfWorkers*8.0f)); //start date plus 8 man hours/day per worker
+        m_dueDate = 1;// m_startDate+Mathf.CeilToInt(m_manHours / (m_numberOfWorkers*8.0f)); //start date plus 8 man hours/day per worker
 
 
         //determine base cost
