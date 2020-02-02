@@ -324,8 +324,9 @@ GameObject:
   - component: {fileID: 5277669858272624675}
   - component: {fileID: 5277669858272624677}
   - component: {fileID: 5277669858272624674}
+  - component: {fileID: 2283100882668160121}
   m_Layer: 5
-  m_Name: Material Slot
+  m_Name: Requested Material Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -393,6 +394,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2283100882668160121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5277669858272624672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37bdedb574364c84286ff0e3998dc4de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CostField: {fileID: 5277669859835935596}
+  m_QualityField: {fileID: 5277669858877645182}
+  m_QuantityField: {fileID: 5277669858560471961}
+  m_dropdown: {fileID: 5277669858376454279}
+  m_materials: []
 --- !u!1 &5277669858376454277
 GameObject:
   m_ObjectHideFlags: 0

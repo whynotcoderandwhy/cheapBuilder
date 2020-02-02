@@ -18,8 +18,6 @@ public class WorkOrder
     protected int m_dueDate;
     protected int m_failureCount;
 
-    protected ClipboardListManager m_clipboard;
-
     public bool WorkComplete => m_spentManHours >= m_manHours || WorkFailed;
 
     public bool WorkFailed => m_dueDate < GameState.GameDay + GameState.CompletetionTolerance; 
@@ -139,6 +137,15 @@ public class WorkOrder
         //determine base cost
         m_baseCost =  (m_manHours * GameState.ManHourSurchange * m_building.Value) + totalbuildingmaterialscost;
 
+        return AddClipboardHeader();
+    }
+
+    public bool AddClipboardHeader()
+    {
+        ClipboardHeader clipHead = GameObject.FindObjectOfType<ClipboardHeader>();
+        if (clipHead == default)
+            return false;
+        clipHead.SetHeader(m_building.Value, m_baseCost, m_baseCost, m_dueDate);
         return true;
     }
 
