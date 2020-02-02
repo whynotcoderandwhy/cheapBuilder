@@ -10,6 +10,8 @@ public class WorkOrder
     protected List<ProductOrder> m_desiredMaterialList;
     protected List<ProductOrder> m_actualMaterialList;
     protected List<ProductOrder> m_sortedbyCostMaterialList;
+    protected int m_indexofLastProduct;
+    protected int m_remainingProduct;  
     protected float m_manHours;
     protected float m_spentManHours;
     protected int m_dueDate;
@@ -23,9 +25,33 @@ public class WorkOrder
     /// Note this function should effect the quality of the building each day by a factor of materials and other features.
     /// </summary>
     /// <param name="">workers particpatating for the day.</param>
-    public void ResolveDay(List<Worker> workees)
+    public float ResolveDayAndCalculateCost(List<Worker> workees)
     {
+        GenerateSortedListIfNeeded();
+        float spentManhours = workees.Count * GameState.WorkHoursPerDay;
 
+        float materialCost = CalcuateMaterialCost(spentManhours);
+        m_spentManHours += spentManhours;
+
+        return materialCost;
+    }
+
+    protected float CalcuateMaterialCost(float spentManhours)
+    {
+        //completedMaterials 
+
+
+
+        return default;
+    }
+
+
+    protected void GenerateSortedListIfNeeded()
+    {
+        if (m_sortedbyCostMaterialList != default)
+            return;
+        m_sortedbyCostMaterialList = m_actualMaterialList.ToList();
+        m_sortedbyCostMaterialList.Sort((first, second) => { return first.Material.Cost.CompareTo(second.Material.Cost); });
     }
 
 
@@ -80,12 +106,6 @@ public class WorkOrder
         //determine base cost
         m_baseCost =  (m_manHours * GameState.ManHourSurchange * m_building.Value) + totalbuildingmaterialscost;
 
-
-        m_sortedbyCostMaterialList = m_actualMaterialList.ToList();
-        m_sortedbyCostMaterialList.Sort((first, second) => { return first.Material.Cost.CompareTo(second.Material.Cost); });
-
-
-
         return true;
     }
 
@@ -94,7 +114,7 @@ public class WorkOrder
     /// Lets the player predict impact aside from worker factor
     /// </summary>
     /// <returns>new integrity value for building at current configuration</returns>
-    public float PredictIntegrityImpact()
+    public float PredictIntegrityImpact(List<Worker> workees)
     {
         throw new System.NotImplementedException();
     }

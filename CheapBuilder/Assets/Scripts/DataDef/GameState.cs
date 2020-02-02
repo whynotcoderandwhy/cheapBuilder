@@ -10,7 +10,7 @@ public class GameState
     public static int CompletetionTolerance;
     public static float CompetenceRatio;
     public static float LuckModifier;
-    public static List<ActiveJob> m_ActiveJobs;
+    public static List<ActiveJob> ActiveJobs;
     public static float CurrentCash;
     public static float WorkHoursPerDay;
     public static float HourProductivity;

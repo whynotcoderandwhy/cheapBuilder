@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class GamePlayManager
 {
@@ -10,7 +11,8 @@ public class GamePlayManager
     {
         GameState.GameDay++;
         GameState.CurrentCash -= m_workerManager.PayWorkers();
-
+        GameState.CurrentCash -= GameState.ActiveJobs.Select(
+            ActiveJob => ActiveJob.ResolveDayAndCalculateCost()).Sum();
     }
     public void RecruitWorkers() { }
 
