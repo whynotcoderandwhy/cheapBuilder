@@ -17,6 +17,8 @@ public class WorkOrder
     protected int m_dueDate;
     protected int failureCount;
 
+    protected ClipboardListManager m_clipboard;
+
     public bool WorkComplete => m_spentManHours >= m_manHours || WorkFailed;
 
     public bool WorkFailed => m_dueDate < GameState.GameDay + GameState.CompletetionTolerance; 

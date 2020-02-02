@@ -44,7 +44,7 @@ public class Material
     public Material(MaterialType m, string n, float q, float c) { m_type = m; m_name = n; m_quality = q; m_cost = c; }
     protected Material() { }
 
-    public static Material PickRandomMaterial(float value)
+    public static Material PickRandomMaterial(float value) //this is always returning Structural
     {
         Material m = new Material();
         MaterialType mtype = new MaterialType();
