@@ -16,6 +16,7 @@ public class GameState
     public static float HourProductivity;
     public static float ManHourSurchange = 0.001f;
     public static float LogImpact = 4;
-
+    public static float AdvancePercentage = 0.2f;
+    public static float MaxFailure = 2;
 }
 

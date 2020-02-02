@@ -6,22 +6,31 @@ using System.Linq;
 public class WorkOrder 
 {
     protected float m_baseCost;
+    public float BaseCost => m_baseCost;
     protected Building m_building;
     protected List<ProductOrder> m_desiredMaterialList;
     protected List<ProductOrder> m_actualMaterialList;
     protected List<ProductOrder> m_sortedbyCostMaterialList;
     protected int m_indexofLastProduct;
-    protected int m_remainingProduct;  
+    protected uint m_remainingProduct;  
     protected float m_manHours;
     protected float m_spentManHours;
     protected int m_dueDate;
-    protected int failureCount;
+    protected int m_failureCount;
 
     protected ClipboardListManager m_clipboard;
 
     public bool WorkComplete => m_spentManHours >= m_manHours || WorkFailed;
 
     public bool WorkFailed => m_dueDate < GameState.GameDay + GameState.CompletetionTolerance; 
+
+    public bool Resolvefailure()
+    {
+        m_sortedbyCostMaterialList = default;
+        if (++m_failureCount > GameState.MaxFailure)
+            return false;
+        return true;
+    }
 
     /// <summary>
     /// Note this function should effect the quality of the building each day by a factor of materials and other features.
@@ -40,11 +49,32 @@ public class WorkOrder
 
     protected float CalcuateMaterialCost(float spentManhours)
     {
-        //completedMaterials 
+        float totalItemConsumption = spentManhours * GameState.HourProductivity;
 
-
-
-        return default;
+        if (m_remainingProduct >= totalItemConsumption)
+        {
+            m_remainingProduct -= (uint)totalItemConsumption;
+            return totalItemConsumption * m_sortedbyCostMaterialList[m_indexofLastProduct].Material.Cost;
+        }
+        float runningTotal = 0;
+        while (totalItemConsumption > 0)
+        {
+            if (m_remainingProduct >= totalItemConsumption)
+            {
+                m_remainingProduct -= (uint)totalItemConsumption;
+                runningTotal += totalItemConsumption * m_sortedbyCostMaterialList[m_indexofLastProduct--].Material.Cost;
+                if ((m_remainingProduct > 0) || (m_indexofLastProduct < 0))
+                    return runningTotal;
+                m_remainingProduct = m_sortedbyCostMaterialList[m_indexofLastProduct].Quantity;
+                return runningTotal;
+            }
+            totalItemConsumption -= m_remainingProduct;
+            runningTotal += m_remainingProduct * m_sortedbyCostMaterialList[m_indexofLastProduct--].Material.Cost;
+            if (m_indexofLastProduct < 0) //not enough sleep leaving this in
+                 return runningTotal;
+            m_remainingProduct = m_sortedbyCostMaterialList[m_indexofLastProduct].Quantity;
+        }
+        return runningTotal;
     }
 
 
@@ -54,9 +84,9 @@ public class WorkOrder
             return;
         m_sortedbyCostMaterialList = m_actualMaterialList.ToList();
         m_sortedbyCostMaterialList.Sort((first, second) => { return first.Material.Cost.CompareTo(second.Material.Cost); });
+        m_indexofLastProduct = m_sortedbyCostMaterialList.Count - 1;
+        m_remainingProduct = m_sortedbyCostMaterialList[m_indexofLastProduct].Quantity;
     }
-
-
 
     protected int m_numberOfWorkers;
 
@@ -119,7 +149,14 @@ public class WorkOrder
     /// <returns>new integrity value for building at current configuration</returns>
     public float PredictIntegrityImpact(List<Worker> workees)
     {
-        throw new System.NotImplementedException();
+        float total = workees.Select(X => X.QualityModifier).Sum()
+            + m_building.Integrity +
+            m_actualMaterialList.Select(X => X.Quantity * X.Material.Quality).Sum();
+        float count = workees.Count
+            + 1 +
+            m_actualMaterialList.Select(X => (float) X.Quantity).Sum();
+
+        return total / count;
     }
 
     /// <summary>
