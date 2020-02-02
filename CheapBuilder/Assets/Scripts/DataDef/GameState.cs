@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 using System.Threading.Tasks;
 
 public class GameState
@@ -14,9 +15,8 @@ public class GameState
 
     //list of all inactive work orders
 
-        //list of all buildings - assign this based on a list of transform points?
-
-
+    //list of all buildings - assign this based on a list of transform points?
+    public static City m_city;
 
 
     public static float CurrentCash;

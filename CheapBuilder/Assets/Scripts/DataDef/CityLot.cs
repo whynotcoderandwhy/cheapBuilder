@@ -7,6 +7,7 @@ public class CityLot
 {
     protected Vector3 m_location;
     protected Vector3 m_size;
-    protected Building m_building; 
+    protected Building m_building;
+    public Building Building => m_building;
 }
 
