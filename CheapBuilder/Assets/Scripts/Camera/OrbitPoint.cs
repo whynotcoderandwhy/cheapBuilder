@@ -31,6 +31,19 @@ public class OrbitPoint
     [SerializeField]
     protected float m_minYaw;
 
+    [SerializeField]
+    protected float m_maxZoom;
+    [SerializeField]
+    protected float m_minZoom;
+
+    public void ZoomIncrement(float zoom)
+    {
+
+        m_distanceFromPivot = Mathf.Clamp(m_distanceFromPivot + zoom, m_minZoom, m_maxZoom);
+
+    }
+
+
     public void Increment(float yaw, float pitch)
     {
         m_yawRotationAroundPivit %= 360;

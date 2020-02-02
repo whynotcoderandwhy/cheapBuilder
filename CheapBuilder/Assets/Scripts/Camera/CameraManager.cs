@@ -76,14 +76,11 @@ public class CameraManager : MonoBehaviour, ISerializationCallbackReceiver
 
     public void Update()
     {
+        float xValue = -Input.GetAxis("Mouse X");
+        float yValue = -Input.GetAxis("Mouse Y");
+        float zValue = Input.GetAxis("Mouse ScrollWheel") * -100;
+        currentBehavoir.ResolveInput(xValue, yValue, zValue, zValue);
 
-        //Vector3 LookInputVec = ALInput.GetDirection(ALInput.DirectionCode.LookInput);//place holder
-
-        /*currentBehavoir.ResolveInput
-            (LookInputVec.x,
-            LookInputVec.y,
-            LookInputVec.x,
-           LookInputVec.y);*/
     }
 
 }

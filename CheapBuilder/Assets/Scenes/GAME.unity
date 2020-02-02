@@ -10149,43 +10149,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb9437e7ddecb304ab5776f3b3c2f62f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FollowObject: {fileID: 1228911633}
+  FollowObject: {fileID: 1807382191}
   CameraObject: {fileID: 1483622766}
   _currentState: 0
   currentBehavoir:
     m_lookAtPoint:
-      m_yawRotationAroundPivit: 0
-      m_pitchRotationAroundPivit: -90
-      m_distanceFromPivot: 10
-      m_maxPitch: 180
-      m_minPitch: -180
-      m_maxYaw: 180
-      m_minYaw: -180
-    m_cameraPoint:
-      m_yawRotationAroundPivit: 0
-      m_pitchRotationAroundPivit: 110
-      m_distanceFromPivot: 10
-      m_maxPitch: 180
-      m_minPitch: -180
+      m_yawRotationAroundPivit: 50
+      m_pitchRotationAroundPivit: 45
+      m_distanceFromPivot: 0
+      m_maxPitch: -20
+      m_minPitch: -85
       m_maxYaw: 360
       m_minYaw: -360
+      m_maxZoom: 20
+      m_minZoom: 0
+    m_cameraPoint:
+      m_yawRotationAroundPivit: 50
+      m_pitchRotationAroundPivit: 45
+      m_distanceFromPivot: 50
+      m_maxPitch: -20
+      m_minPitch: -85
+      m_maxYaw: 360
+      m_minYaw: -360
+      m_maxZoom: 500
+      m_minZoom: 20
   m_abzu:
     m_lookAtPoint:
-      m_yawRotationAroundPivit: 0
-      m_pitchRotationAroundPivit: -90
-      m_distanceFromPivot: 10
-      m_maxPitch: 180
-      m_minPitch: -180
-      m_maxYaw: 180
-      m_minYaw: -180
-    m_cameraPoint:
-      m_yawRotationAroundPivit: 0
-      m_pitchRotationAroundPivit: 110
-      m_distanceFromPivot: 10
-      m_maxPitch: 180
-      m_minPitch: -180
+      m_yawRotationAroundPivit: 50
+      m_pitchRotationAroundPivit: 45
+      m_distanceFromPivot: 0
+      m_maxPitch: -20
+      m_minPitch: -85
       m_maxYaw: 360
       m_minYaw: -360
+      m_maxZoom: 20
+      m_minZoom: 0
+    m_cameraPoint:
+      m_yawRotationAroundPivit: 50
+      m_pitchRotationAroundPivit: 45
+      m_distanceFromPivot: 50
+      m_maxPitch: -20
+      m_minPitch: -85
+      m_maxYaw: 360
+      m_minYaw: -360
+      m_maxZoom: 500
+      m_minZoom: 20
 --- !u!1 &1513059351
 GameObject:
   m_ObjectHideFlags: 0
@@ -11135,6 +11143,12 @@ Transform:
   m_Father: {fileID: 198416205}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1807382191 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: b5e3a8cfa9a66b346a31eeb9a967ef8c,
+    type: 3}
+  m_PrefabInstance: {fileID: 42480361}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1808371205
 GameObject:
   m_ObjectHideFlags: 0
