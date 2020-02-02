@@ -76,14 +76,11 @@ public class CameraManager : MonoBehaviour, ISerializationCallbackReceiver
 
     public void Update()
     {
+        float xValue = Input.GetAxis("Horizontal");
+        float yValue = Input.GetAxis("Vertical");
 
-        //Vector3 LookInputVec = ALInput.GetDirection(ALInput.DirectionCode.LookInput);//place holder
+        currentBehavoir.ResolveInput(xValue, yValue, xValue, yValue);
 
-        /*currentBehavoir.ResolveInput
-            (LookInputVec.x,
-            LookInputVec.y,
-            LookInputVec.x,
-           LookInputVec.y);*/
     }
 
 }
