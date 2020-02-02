@@ -4,10 +4,21 @@ using UnityEngine;
 
 public class GamePlayManager
 {
-    public void IncrementDay() { }
+    protected WorkerManager m_workerManager = new WorkerManager();
+
+    public void IncrementDay()
+    {
+        GameState.GameDay++;
+        GameState.CurrentCash -= m_workerManager.PayWorkers();
+
+    }
     public void RecruitWorkers() { }
 
     public void AcceptNewJob(Building JobRequester) { }
 
-    public void ResolveWorkOrder() { }
+    public void ResolveWorkOrder()
+    {
+
+
+    }
 }

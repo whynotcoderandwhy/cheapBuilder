@@ -40,6 +40,11 @@ public class WorkerManager
         return true;
     }
 
+    public float PayWorkers()
+    {
+        return m_workerPool.Select(X => X.HourlyRate * GameState.WorkHoursPerDay).Sum() 
+            + m_activeWorkers.Select(X => X.HourlyRate * GameState.WorkHoursPerDay).Sum();
+    }
 
     public void NewWorker(Worker workee)
     {
