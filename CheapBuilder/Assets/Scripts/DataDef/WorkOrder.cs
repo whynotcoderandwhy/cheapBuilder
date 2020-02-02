@@ -6,22 +6,34 @@ using System.Linq;
 public class WorkOrder 
 {
     protected float m_baseCost;
+    public float BaseCost => m_baseCost;
     protected Building m_building;
     protected List<ProductOrder> m_desiredMaterialList;
     protected List<ProductOrder> m_actualMaterialList;
     protected List<ProductOrder> m_sortedbyCostMaterialList;
     protected int m_indexofLastProduct;
-    protected int m_remainingProduct;  
+    protected uint m_remainingProduct;  
     protected float m_manHours;
     protected float m_spentManHours;
     protected int m_dueDate;
-    protected int failureCount;
-
-    protected ClipboardListManager m_clipboard;
+    protected int m_failureCount;
 
     public bool WorkComplete => m_spentManHours >= m_manHours || WorkFailed;
 
     public bool WorkFailed => m_dueDate < GameState.GameDay + GameState.CompletetionTolerance; 
+
+    public bool Resolvefailure()
+    {
+        m_sortedbyCostMaterialList = default;
+        if (++m_failureCount > GameState.MaxFailure)
+        {
+            m_building.SetHasWorkOrder(false);
+            return false;
+        }
+
+        m_dueDate += Random.Range(1, 7);
+        return true;
+    }
 
     /// <summary>
     /// Note this function should effect the quality of the building each day by a factor of materials and other features.
@@ -40,11 +52,32 @@ public class WorkOrder
 
     protected float CalcuateMaterialCost(float spentManhours)
     {
-        //completedMaterials 
+        float totalItemConsumption = spentManhours * GameState.HourProductivity;
 
-
-
-        return default;
+        if (m_remainingProduct >= totalItemConsumption)
+        {
+            m_remainingProduct -= (uint)totalItemConsumption;
+            return totalItemConsumption * m_sortedbyCostMaterialList[m_indexofLastProduct].Material.Cost;
+        }
+        float runningTotal = 0;
+        while (totalItemConsumption > 0)
+        {
+            if (m_remainingProduct >= totalItemConsumption)
+            {
+                m_remainingProduct -= (uint)totalItemConsumption;
+                runningTotal += totalItemConsumption * m_sortedbyCostMaterialList[m_indexofLastProduct--].Material.Cost;
+                if ((m_remainingProduct > 0) || (m_indexofLastProduct < 0))
+                    return runningTotal;
+                m_remainingProduct = m_sortedbyCostMaterialList[m_indexofLastProduct].Quantity;
+                return runningTotal;
+            }
+            totalItemConsumption -= m_remainingProduct;
+            runningTotal += m_remainingProduct * m_sortedbyCostMaterialList[m_indexofLastProduct--].Material.Cost;
+            if (m_indexofLastProduct < 0) //not enough sleep leaving this in
+                 return runningTotal;
+            m_remainingProduct = m_sortedbyCostMaterialList[m_indexofLastProduct].Quantity;
+        }
+        return runningTotal;
     }
 
 
@@ -54,9 +87,9 @@ public class WorkOrder
             return;
         m_sortedbyCostMaterialList = m_actualMaterialList.ToList();
         m_sortedbyCostMaterialList.Sort((first, second) => { return first.Material.Cost.CompareTo(second.Material.Cost); });
+        m_indexofLastProduct = m_sortedbyCostMaterialList.Count - 1;
+        m_remainingProduct = m_sortedbyCostMaterialList[m_indexofLastProduct].Quantity;
     }
-
-
 
     protected int m_numberOfWorkers;
 
@@ -94,6 +127,7 @@ public class WorkOrder
             quantityofmaterials += po.Quantity;
             totalbuildingmaterialscost += po.Material.Cost * po.Quantity;
             m_desiredMaterialList.Add(po);
+            po.AddToClipboard();
         }
 
 
@@ -102,12 +136,23 @@ public class WorkOrder
 
 
         //determine due date
-        m_dueDate = GameState.GameDay * (int) Random.Range(m_manHours / GameState.WorkHoursPerDay / Mathf.Log(GameState.LogImpact, m_building.Value), m_manHours / GameState.WorkHoursPerDay);// m_startDate+Mathf.CeilToInt(m_manHours / (m_numberOfWorkers*8.0f)); //start date plus 8 man hours/day per worker
+        m_dueDate = GameState.GameDay + (int) System.Math.Min(1, Random.Range(m_manHours / GameState.WorkHoursPerDay / Mathf.Log(GameState.LogImpact, m_building.Value), m_manHours / GameState.WorkHoursPerDay)) ;// m_startDate+Mathf.CeilToInt(m_manHours / (m_numberOfWorkers*8.0f)); //start date plus 8 man hours/day per worker
 
 
         //determine base cost
         m_baseCost =  (m_manHours * GameState.ManHourSurchange * m_building.Value) + totalbuildingmaterialscost;
 
+        building.SetHasWorkOrder(true);
+
+        return AddClipboardHeader();
+    }
+
+    public bool AddClipboardHeader()
+    {
+        ClipboardHeader clipHead = GameObject.FindObjectOfType<ClipboardHeader>();
+        if (clipHead == default)
+            return false;
+        clipHead.SetHeader(m_building.Value, m_baseCost, m_baseCost, m_dueDate);
         return true;
     }
 
@@ -118,7 +163,14 @@ public class WorkOrder
     /// <returns>new integrity value for building at current configuration</returns>
     public float PredictIntegrityImpact(List<Worker> workees)
     {
-        throw new System.NotImplementedException();
+        float total = workees.Select(X => X.QualityModifier).Sum()
+            + m_building.Integrity +
+            m_actualMaterialList.Select(X => X.Quantity * X.Material.Quality).Sum();
+        float count = workees.Count
+            + 1 +
+            m_actualMaterialList.Select(X => (float) X.Quantity).Sum();
+
+        return total / count;
     }
 
     /// <summary>
@@ -135,6 +187,7 @@ public class WorkOrder
         if (m_actualMaterialList[actualMaterialIndex].SplitThisOrder(out np))
         {
             m_actualMaterialList.Insert(actualMaterialIndex + 1, np);
+            np.AddToClipboard();
             return true;
         }
         return false;
@@ -160,13 +213,10 @@ public class WorkOrder
     /// <param name="newMaterialCount"></param>
     public void UpdateQuantity(int actualMaterialIndex, int newMaterialCount)
     {
-        if (newMaterialCount < 1)
-            return;
-
         uint currentQuanity = m_actualMaterialList[actualMaterialIndex].Quantity;
-        m_actualMaterialList[actualMaterialIndex].UpdateQuanity((uint)newMaterialCount);
+        m_actualMaterialList[actualMaterialIndex].UpdateQuanity((uint)( newMaterialCount + currentQuanity) );
 
-        Redistribute(actualMaterialIndex, currentQuanity - newMaterialCount);
+        Redistribute(actualMaterialIndex, -newMaterialCount);
     }
 
     /// <summary>
@@ -178,6 +228,8 @@ public class WorkOrder
     /// <returns></returns>
     protected bool AreTheseTheSameMaterial(int firstMaterialIndex, int secondMaterialIndex)
     {
+        if ((firstMaterialIndex < 0) || (secondMaterialIndex < 0) || (firstMaterialIndex >= m_actualMaterialList.Count) || (secondMaterialIndex >= m_actualMaterialList.Count))
+            return false;
         if (m_actualMaterialList[firstMaterialIndex] == null || m_actualMaterialList[secondMaterialIndex] == null) //they need to exist
             return false;
         //this checks if the second material is the same core material type as the first one

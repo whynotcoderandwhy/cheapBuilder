@@ -45,6 +45,7 @@ public class WorkOrderTests : WorkOrder
         m_actualMaterialList = new List<ProductOrder>();
 
         ProductOrder p = new ProductOrder(new Material(Material.MaterialType.Adhesive | Material.MaterialType.Damaged, "1", 3, 100),5);
+        p.AddToClipboard();
         m_actualMaterialList.Add(p);
     }
 
@@ -70,17 +71,6 @@ public class WorkOrderTests : WorkOrder
         Assert.That(m_actualMaterialList[0].IsLocked == false, string.Format("Should be false, got {0}", m_actualMaterialList[0].IsLocked));
     }
 
-    [Test]
-    public void UpdateQuantityTest()
-    {
-        setupTestingOrder();
-        UpdateQuantity(0, 1332);
-
-        Assert.That(m_actualMaterialList[0].Quantity == 1337, string.Format("Should be 1337, got {0}", m_actualMaterialList[0].Quantity));
-        UpdateQuantity(0, -1332);
-
-        Assert.That(m_actualMaterialList[0].Quantity == 5, string.Format("Should be 5, got {0}", m_actualMaterialList[0].Quantity));
-    }
 
     [Test]
     public void SameMatTest()
@@ -88,6 +78,7 @@ public class WorkOrderTests : WorkOrder
         setupTestingOrder();
         Material.MaterialType mt = Material.MaterialType.Mechanical | Material.MaterialType.Branded;
         ProductOrder p = new ProductOrder(new Material(mt, "2", 5, 700),50);
+        p.AddToClipboard();
         m_actualMaterialList.Add(p);
 
 
@@ -112,13 +103,7 @@ public class WorkOrderTests : WorkOrder
 
     }
 
-    [Test]
-    public void RedistTest()
-    {
-        setupTestingOrder();
-        Redistribute(m_actualMaterialList.Count, 500); //using Count so that it'll distribute to the last item on list
-        Assert.That(m_actualMaterialList[m_actualMaterialList.Count-1].Quantity == 505, "didn't properly distribute");
-    }
+
 
 
 
