@@ -11,5 +11,8 @@ public class GameState
     public static float CompetenceRatio;
     public static float LuckModifier;
     public static List<ActiveJob> m_ActiveJobs;
+
+
+    //0.5% cost of house per hour to pay workers?
 }
 
