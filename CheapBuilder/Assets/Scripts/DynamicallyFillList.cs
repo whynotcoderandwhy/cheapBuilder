@@ -21,7 +21,7 @@ public class DynamicallyFillList : MonoBehaviour
             GameObject g = Instantiate(item) as GameObject;
             if (g == default)
             {
-                Debug.LogError("failed to instatniate");
+                Debug.LogError("failed to instantiate");
             }
             else
             {

@@ -531,7 +531,18 @@ MonoBehaviour:
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7114883306677174425}
+        m_MethodName: UpdateSurrentSlot
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Dropdown+DropdownEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_AlphaFadeSpeed: 0.15
@@ -679,8 +690,8 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
+    m_BestFit: 1
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 3
     m_AlignByGeometry: 0
@@ -700,6 +711,7 @@ GameObject:
   - component: {fileID: 8742888056871227505}
   - component: {fileID: 8742888056871227511}
   - component: {fileID: 8742888056871227504}
+  - component: {fileID: 7114883306677174425}
   m_Layer: 5
   m_Name: Material Slot 1
   m_TagString: Untagged
@@ -768,6 +780,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7114883306677174425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8742888056871227506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37bdedb574364c84286ff0e3998dc4de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CostField: {fileID: 8742888057222376254}
+  m_QualityField: {fileID: 8742888056266223916}
+  m_QuantityField: {fileID: 8742888056618001355}
+  m_dropdown: {fileID: 8742888056834506965}
+  m_materials: []
 --- !u!1 &8742888056934940324
 GameObject:
   m_ObjectHideFlags: 0
