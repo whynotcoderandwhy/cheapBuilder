@@ -26,8 +26,12 @@ public class WorkOrder
     {
         m_sortedbyCostMaterialList = default;
         if (++m_failureCount > GameState.MaxFailure)
+        {
+            m_building.SetHasWorkOrder(false);
             return false;
-        m_dueDate = Random.Range(1, 7);
+        }
+
+        m_dueDate += Random.Range(1, 7);
         return true;
     }
 
@@ -137,6 +141,8 @@ public class WorkOrder
 
         //determine base cost
         m_baseCost =  (m_manHours * GameState.ManHourSurchange * m_building.Value) + totalbuildingmaterialscost;
+
+        building.SetHasWorkOrder(true);
 
         return AddClipboardHeader();
     }

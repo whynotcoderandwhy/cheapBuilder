@@ -14,6 +14,6 @@ public class Building
 
     protected bool m_hasWorkOrder;
     public bool HasWorkOrder => m_hasWorkOrder;
-
+    public void SetHasWorkOrder(bool value) { m_hasWorkOrder = value; }
     public void Init(float value, float integrity) { m_integrity = integrity; m_value = value; }
 }

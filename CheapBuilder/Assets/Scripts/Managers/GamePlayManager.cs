@@ -15,13 +15,22 @@ public class GamePlayManager
             ActiveJob => ActiveJob.ResolveDayAndCalculateCost()
             ).Sum();
         ResolveExpiredJobs();
+        GenerateRepairs();
     }
 
-    protected void generateRepairs()
+    protected void GenerateRepairs()
     {
         float repairDensity = (GameState.ActiveJobs.Count + GameState.AvailibleJobs.Count) / GameState.Cityscape.Count;
-        if (Random.Range(0, 1-repairDensity)> )
-         
+        if (Random.Range(0, 1 - repairDensity) < GameState.RepairThreshold)
+            return;
+
+        int targetedhome = Random.Range(0, GameState.Cityscape.Count - 1);
+        while (GameState.Cityscape[targetedhome].HasWorkOrder)
+            targetedhome = Random.Range(0, GameState.Cityscape.Count - 1);
+
+        WorkOrder newWorkOrder = new WorkOrder();
+        newWorkOrder.CreateInitialWorkOrderSpecs(GameState.Cityscape[targetedhome]);
+        GameState.AvailibleJobs.Add(newWorkOrder);
     }
 
 
@@ -47,10 +56,11 @@ public class GamePlayManager
 
     public void RecruitWorkers() { }
 
-    public void AcceptNewJob(Building JobRequester) { }
-
-    public void ResolveWorkOrder()
+    public void AcceptNewJob(WorkOrder JobRequest)
     {
-        
+        if (!GameState.AvailibleJobs.Remove(JobRequest))
+            return;
+        GameState.ActiveJobs.Add(new ActiveJob(JobRequest));
     }
+
 }
