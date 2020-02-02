@@ -34,7 +34,16 @@ public class City : MonoBehaviour
         {
             int h = UnityEngine.Random.Range(0, num - 1);
             GameObject hp = Instantiate(m_allHousePrefabs[h]) as GameObject;
+            //hp.transform.SetPositionAndRotation(pt.transform.position, Quaternion.LookRotation( ((h > (num / 2))? Vector3.forward: Vector3.right), Vector3.up));
+
             hp.transform.position = pt.transform.position;
+
+            Vector2 rv = UnityEngine.Random.insideUnitCircle;
+            Vector3 rv2 = Vector3.zero;
+            rv2.x = rv.x;
+            //rv2.y
+
+            //hp.transform.LookAt();
 
             Building b = new Building();
             b.Init(UnityEngine.Random.Range(0, 100), UnityEngine.Random.Range(0, 100)); //building values
